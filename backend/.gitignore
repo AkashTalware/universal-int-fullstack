@@ -1,0 +1,6 @@
+node_modules/
+.env
+db/luxespace.db
+uploads/
+*.db-shm
+*.db-wal

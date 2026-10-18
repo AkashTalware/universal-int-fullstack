@@ -1,0 +1,12 @@
+node_modules/
+.next/
+backend/node_modules/
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/db/*.db
+backend/db/*.db-wal
+backend/db/*.db-shm
+.env
+.env.local
+.DS_Store
+*.log
