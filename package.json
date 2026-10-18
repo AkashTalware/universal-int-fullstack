@@ -1,0 +1,15 @@
+{
+  "name": "universal-int-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Universal Int Studio — Modern Furniture & Interior Portfolio and Storefront (Next.js + Express + SQLite)",
+  "scripts": {
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "seed": "node backend/db/seed.js",
+    "setup": "npm run install:all && npm run seed",
+    "format": "npx prettier --write .",
+    "format:check": "npx prettier --check ."
+  }
+}
