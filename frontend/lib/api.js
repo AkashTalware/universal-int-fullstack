@@ -47,7 +47,8 @@ async function request(path, options = {}) {
         window.location.pathname.startsWith('/admin') &&
         window.location.pathname !== '/admin/login'
       ) {
-        window.location.href = '/admin/login?expired=1';
+        const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
+        window.location.href = `/admin/login?expired=1&returnTo=${returnTo}`;
       }
     }
     const error = new Error(err.error || 'Request failed');
@@ -131,7 +132,8 @@ export const api = {
           window.location.pathname.startsWith('/admin') &&
           window.location.pathname !== '/admin/login'
         ) {
-          window.location.href = '/admin/login?expired=1';
+          const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
+          window.location.href = `/admin/login?expired=1&returnTo=${returnTo}`;
         }
       }
       const err = await res.json().catch(() => ({ error: 'Upload failed' }));
