@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const corsMiddleware = require('./middleware/cors');
-const { initDB } = require('./db/database');
+const { initDB, getDB } = require('./db/database');
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
@@ -44,7 +44,17 @@ app.use((err, req, res, next) => {
 
 // ─── Start ───────────────────────────────────────────────────────────────────
 initDB()
-  .then(() => {
+  .then(async () => {
+    // Auto-seed on first boot (when DB is empty) — safe to redeploy, never wipes live data
+    const db = getDB();
+    const { count } = db.prepare('SELECT COUNT(*) as count FROM admin_users').get();
+    if (count === 0) {
+      console.log('🌱  Empty database detected — running seed...');
+      const { seed } = require('./db/seed');
+      await seed();
+      console.log('✅  Seed complete.');
+    }
+
     app.listen(PORT, () => {
       console.log(`\n🛋️  Universal Int Studio API running → http://localhost:${PORT}`);
       console.log(`   Health check → http://localhost:${PORT}/api/health\n`);
@@ -54,3 +64,4 @@ initDB()
     console.error('Failed to initialize database:', err);
     process.exit(1);
   });
+
