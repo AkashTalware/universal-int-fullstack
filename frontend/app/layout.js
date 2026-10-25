@@ -8,6 +8,13 @@ export const metadata = {
     'Universal Int Studio (Interior Studio). Discover bespoke modern furniture and curated interior collections for every space.',
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#0a0908',
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>

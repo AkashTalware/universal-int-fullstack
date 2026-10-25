@@ -107,6 +107,9 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
       aria-label={`${name} Quick View`}
     >
       <div className="quickview-modal" onClick={(e) => e.stopPropagation()}>
+        {/* Mobile bottom-sheet drag handle */}
+        <div className="quickview-sheet-handle" aria-hidden="true" />
+
         {/* Close Button */}
         <button className="quickview-close-btn" onClick={onClose} aria-label="Close modal">
           <svg

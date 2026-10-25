@@ -75,16 +75,18 @@ function ShopContent() {
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '80px' }}>
         {/* Filter Bar */}
         <div className="filter-bar">
-          {CATS.map((c) => (
-            <button
-              key={c.slug}
-              className={`chip${activeCategory === c.slug ? ' active' : ''}`}
-              onClick={() => setCategory(c.slug)}
-              id={`filter-${c.slug || 'all'}`}
-            >
-              {c.name}
-            </button>
-          ))}
+          <div className="filter-chips-scroll">
+            {CATS.map((c) => (
+              <button
+                key={c.slug}
+                className={`chip${activeCategory === c.slug ? ' active' : ''}`}
+                onClick={() => setCategory(c.slug)}
+                id={`filter-${c.slug || 'all'}`}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
           <div className="filter-right">
             <input
               className="input"
