@@ -1,10 +1,10 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api, setAdminToken } from '@/lib/api';
 
-export default function AdminLoginPage() {
+function AdminLoginInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [form, setForm] = useState({ username: '', password: '' });
@@ -206,5 +206,13 @@ export default function AdminLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense>
+      <AdminLoginInner />
+    </Suspense>
   );
 }
