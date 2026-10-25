@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
@@ -72,6 +72,33 @@ export default function ProductDetailPage() {
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+  }
+
+  // Mobile touch swipe gesture handlers for gallery
+  const touchStartRef = useRef({ x: 0, y: 0 });
+
+  function handleTouchStart(e) {
+    if (e.touches && e.touches.length === 1) {
+      touchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+  }
+
+  function handleTouchEnd(e) {
+    if (e.changedTouches && e.changedTouches.length === 1) {
+      const deltaX = e.changedTouches[0].clientX - touchStartRef.current.x;
+      const deltaY = e.changedTouches[0].clientY - touchStartRef.current.y;
+      // Minimum swipe distance of 36px and predominantly horizontal movement
+      if (Math.abs(deltaX) > 36 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+        if (deltaX < 0) {
+          handleNextImg();
+        } else {
+          handlePrevImg();
+        }
+      }
+    }
   }
 
   function handlePrevImg(e) {
@@ -215,6 +242,8 @@ export default function ProductDetailPage() {
             <div
               className="gallery-main"
               onClick={() => setLightboxOpen(true)}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
               style={{ cursor: 'zoom-in', position: 'relative' }}
               title="Click to view full-resolution"
             >

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { formatPrice } from '@/lib/api';
@@ -78,6 +78,33 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
   const emiPerMonth = Math.round(currentPrice / 12);
   const totalImages = images.length || 1;
 
+  // Mobile touch swipe gestures for carousel
+  const touchStartRef = useRef({ x: 0, y: 0 });
+
+  function handleTouchStart(e) {
+    if (e.touches && e.touches.length === 1) {
+      touchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+  }
+
+  function handleTouchEnd(e) {
+    if (e.changedTouches && e.changedTouches.length === 1) {
+      const deltaX = e.changedTouches[0].clientX - touchStartRef.current.x;
+      const deltaY = e.changedTouches[0].clientY - touchStartRef.current.y;
+      // Minimum swipe distance of 36px and predominantly horizontal movement
+      if (Math.abs(deltaX) > 36 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+        if (deltaX < 0) {
+          handleNext();
+        } else {
+          handlePrev();
+        }
+      }
+    }
+  }
+
   function handlePrev(e) {
     e?.stopPropagation?.();
     setActiveIdx((prev) => (prev === 0 ? totalImages - 1 : prev - 1));
@@ -130,7 +157,11 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
         <div className="quickview-grid">
           {/* ── Left Column: Interactive Image Carousel ── */}
           <div className="quickview-carousel">
-            <div className="quickview-main-img-wrap">
+            <div
+              className="quickview-main-img-wrap"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               {images[activeIdx] ? (
                 <img
                   src={images[activeIdx]}
