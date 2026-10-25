@@ -20,7 +20,8 @@ export default function AdminLayout({ children }) {
     const token = getAdminToken();
     if (!token || isTokenExpired(token)) {
       clearAdminToken();
-      router.push('/admin/login?expired=1');
+      const returnTo = encodeURIComponent(pathname + (typeof window !== 'undefined' ? window.location.search : ''));
+      router.push(`/admin/login?expired=1&returnTo=${returnTo}`);
     }
   }, [pathname, router]);
 

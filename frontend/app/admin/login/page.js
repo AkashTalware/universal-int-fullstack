@@ -1,24 +1,22 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api, setAdminToken } from '@/lib/api';
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [form, setForm] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
   const [sessionNotice, setSessionNotice] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('expired')) {
-        setSessionNotice('Your session has expired or is invalid. Please sign in again.');
-      }
+    if (searchParams.get('expired')) {
+      setSessionNotice('Your session has expired or is invalid. Please sign in again.');
     }
-  }, []);
+  }, [searchParams]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,7 +26,8 @@ export default function AdminLoginPage() {
     try {
       const { token } = await api.login(form);
       setAdminToken(token);
-      router.push('/admin');
+      const returnTo = searchParams.get('returnTo');
+      router.push(returnTo ? decodeURIComponent(returnTo) : '/admin');
     } catch (err) {
       setError(err.message || 'Login failed');
     } finally {
