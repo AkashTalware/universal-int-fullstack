@@ -18,6 +18,7 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
   const [selectedDim, setSelectedDim] = useState('');
   const [selectedMat, setSelectedMat] = useState('');
   const [selectedFinish, setSelectedFinish] = useState('');
+  const touchStartRef = useRef({ x: 0, y: 0 });
 
   // Reset active image, quantity & selected options whenever product changes or modal opens
   useEffect(() => {
@@ -79,8 +80,6 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
   const totalImages = images.length || 1;
 
   // Mobile touch swipe gestures for carousel
-  const touchStartRef = useRef({ x: 0, y: 0 });
-
   function handleTouchStart(e) {
     if (e.touches && e.touches.length === 1) {
       touchStartRef.current = {
@@ -310,19 +309,20 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
                 <div className="quickview-option-group">
                   <div className="quickview-option-header">
                     <span className="quickview-option-label">📐 Dimensions / Sizing</span>
-                    <span className="quickview-option-selected">{selectedDim}</span>
                   </div>
-                  <div className="quickview-chip-row">
-                    {options.dimensions.map((dim) => (
-                      <button
-                        key={dim}
-                        type="button"
-                        className={`quickview-option-chip ${selectedDim === dim ? 'active' : ''}`}
-                        onClick={() => setSelectedDim(dim)}
-                      >
-                        {dim}
-                      </button>
-                    ))}
+                  <div className="quickview-select-wrap">
+                    <select
+                      className="quickview-select"
+                      value={selectedDim}
+                      onChange={(e) => setSelectedDim(e.target.value)}
+                      aria-label="Select Dimensions"
+                    >
+                      {options.dimensions.map((dim) => (
+                        <option key={dim} value={dim}>
+                          {dim}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               ) : (
@@ -339,19 +339,20 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
                 <div className="quickview-option-group">
                   <div className="quickview-option-header">
                     <span className="quickview-option-label">🪵 Material Specification</span>
-                    <span className="quickview-option-selected">{selectedMat}</span>
                   </div>
-                  <div className="quickview-chip-row">
-                    {options.materials.map((mat) => (
-                      <button
-                        key={mat}
-                        type="button"
-                        className={`quickview-option-chip ${selectedMat === mat ? 'active' : ''}`}
-                        onClick={() => setSelectedMat(mat)}
-                      >
-                        {mat}
-                      </button>
-                    ))}
+                  <div className="quickview-select-wrap">
+                    <select
+                      className="quickview-select"
+                      value={selectedMat}
+                      onChange={(e) => setSelectedMat(e.target.value)}
+                      aria-label="Select Material"
+                    >
+                      {options.materials.map((mat) => (
+                        <option key={mat} value={mat}>
+                          {mat}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               ) : (
@@ -368,19 +369,20 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
                 <div className="quickview-option-group">
                   <div className="quickview-option-header">
                     <span className="quickview-option-label">🎨 Surface Finish</span>
-                    <span className="quickview-option-selected">{selectedFinish}</span>
                   </div>
-                  <div className="quickview-chip-row">
-                    {options.finishes.map((fsh) => (
-                      <button
-                        key={fsh}
-                        type="button"
-                        className={`quickview-option-chip ${selectedFinish === fsh ? 'active' : ''}`}
-                        onClick={() => setSelectedFinish(fsh)}
-                      >
-                        {fsh}
-                      </button>
-                    ))}
+                  <div className="quickview-select-wrap">
+                    <select
+                      className="quickview-select"
+                      value={selectedFinish}
+                      onChange={(e) => setSelectedFinish(e.target.value)}
+                      aria-label="Select Finish"
+                    >
+                      {options.finishes.map((fsh) => (
+                        <option key={fsh} value={fsh}>
+                          {fsh}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               ) : (

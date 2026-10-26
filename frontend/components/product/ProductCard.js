@@ -50,7 +50,17 @@ export default function ProductCard({ product }) {
         {/* Image Wrap */}
         <div className="product-img-wrap">
           {img ? (
-            <img src={img} alt={name} className="product-img" loading="lazy" />
+            <img
+              src={img}
+              alt={name}
+              className="product-img"
+              loading="lazy"
+              onError={(e) => {
+                if (images[1] && e.currentTarget.src !== images[1]) {
+                  e.currentTarget.src = images[1];
+                }
+              }}
+            />
           ) : (
             <div
               className="product-img"
