@@ -6,7 +6,7 @@ import { formatPrice } from '@/lib/api';
 import { getProductOptions } from '@/lib/productOptions';
 
 export default function ProductQuickView({ product, isOpen, onClose }) {
-  const { addItem } = useCart();
+  const { addItem, cartOpen } = useCart();
   const [activeIdx, setActiveIdx] = useState(0);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
@@ -19,6 +19,27 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
   const [selectedMat, setSelectedMat] = useState('');
   const [selectedFinish, setSelectedFinish] = useState('');
   const touchStartRef = useRef({ x: 0, y: 0 });
+
+  // Auto-close QuickView if cart drawer opens
+  useEffect(() => {
+    if (cartOpen && isOpen) {
+      onClose();
+    }
+  }, [cartOpen, isOpen, onClose]);
+
+  // Listen to global modal close events
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleForceClose() {
+      onClose();
+    }
+    window.addEventListener('close-quickview', handleForceClose);
+    window.addEventListener('close-all-modals', handleForceClose);
+    return () => {
+      window.removeEventListener('close-quickview', handleForceClose);
+      window.removeEventListener('close-all-modals', handleForceClose);
+    };
+  }, [isOpen, onClose]);
 
   // Reset active image, quantity & selected options whenever product changes or modal opens
   useEffect(() => {
@@ -114,8 +135,28 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
     setActiveIdx((prev) => (prev === totalImages - 1 ? 0 : prev + 1));
   }
 
+  function handleQtyChange(e) {
+    const raw = e.target.value;
+    if (raw === '') {
+      setQty('');
+      return;
+    }
+    const val = parseInt(raw, 10);
+    if (!isNaN(val)) {
+      setQty(Math.max(1, Math.min(999, val)));
+    }
+  }
+
+  function handleQtyBlur() {
+    if (!qty || Number(qty) < 1) {
+      setQty(1);
+    }
+  }
+
   function handleAddToCart() {
-    addItem(product, qty, {
+    const finalQty = Math.max(1, Number(qty) || 1);
+    if (qty !== finalQty) setQty(finalQty);
+    addItem(product, finalQty, {
       dimensions: selectedDim,
       material: selectedMat,
       finish: selectedFinish,
@@ -421,16 +462,28 @@ export default function ProductQuickView({ product, isOpen, onClose }) {
                   <button
                     type="button"
                     className="qty-btn"
-                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    onClick={() => setQty((q) => Math.max(1, (Number(q) || 1) - 1))}
                     aria-label="Decrease quantity"
                   >
                     −
                   </button>
-                  <span className="qty-val">{qty}</span>
+                  <input
+                    type="number"
+                    min="1"
+                    max="999"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    className="qty-val qty-val-input"
+                    value={qty}
+                    onChange={handleQtyChange}
+                    onFocus={(e) => e.target.select()}
+                    onBlur={handleQtyBlur}
+                    aria-label="Product quantity"
+                  />
                   <button
                     type="button"
                     className="qty-btn"
-                    onClick={() => setQty((q) => q + 1)}
+                    onClick={() => setQty((q) => Math.min(999, (Number(q) || 0) + 1))}
                     aria-label="Increase quantity"
                   >
                     +

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:ui": "node scripts/test-mobile-ui.js"
   },
   "dependencies": {
     "next": "16.4.2",
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.16.4",
     "eslint": "^9",
-    "eslint-config-next": "16.4.2"
+    "eslint-config-next": "16.4.2",
+    "puppeteer-core": "^25.16.0"
   }
 }

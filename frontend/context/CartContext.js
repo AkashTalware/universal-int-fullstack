@@ -94,6 +94,15 @@ export function CartProvider({ children }) {
     setItems([]);
   }
 
+  function handleSetCartOpen(val) {
+    const nextVal = typeof val === 'function' ? val(cartOpen) : val;
+    if (nextVal && typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('close-quickview'));
+      window.dispatchEvent(new CustomEvent('close-all-modals'));
+    }
+    setCartOpen(nextVal);
+  }
+
   const total = items.reduce((sum, i) => sum + (i.sale_price || i.price) * i.quantity, 0);
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
@@ -108,7 +117,7 @@ export function CartProvider({ children }) {
         total,
         itemCount,
         cartOpen,
-        setCartOpen,
+        setCartOpen: handleSetCartOpen,
         toastItem,
         clearToast,
         cartBump,

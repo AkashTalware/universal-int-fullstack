@@ -1,14 +1,35 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { formatPrice } from '@/lib/api';
 import ProductQuickView from './ProductQuickView';
 
 export default function ProductCard({ product }) {
-  const { addItem } = useCart();
+  const { addItem, cartOpen } = useCart();
   const [added, setAdded] = useState(false);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
+
+  // Close quick view if cart opens
+  useEffect(() => {
+    if (cartOpen && quickViewOpen) {
+      setQuickViewOpen(false);
+    }
+  }, [cartOpen, quickViewOpen]);
+
+  // Listen to close-quickview global event
+  useEffect(() => {
+    if (!quickViewOpen) return;
+    function handleForceClose() {
+      setQuickViewOpen(false);
+    }
+    window.addEventListener('close-quickview', handleForceClose);
+    window.addEventListener('close-all-modals', handleForceClose);
+    return () => {
+      window.removeEventListener('close-quickview', handleForceClose);
+      window.removeEventListener('close-all-modals', handleForceClose);
+    };
+  }, [quickViewOpen]);
 
   const {
     id,

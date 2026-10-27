@@ -568,7 +568,6 @@ h6 {
 }
 
 @media (max-width: 768px) {
-
   .grid-4,
   .grid-3 {
     grid-template-columns: repeat(2, 1fr);
@@ -577,7 +576,6 @@ h6 {
 }
 
 @media (max-width: 480px) {
-
   .grid-4,
   .grid-3 {
     grid-template-columns: 1fr;
@@ -590,7 +588,6 @@ h6 {
 }
 
 @media (max-width: 320px) {
-
   .grid-4,
   .grid-3 {
     grid-template-columns: 1fr;
@@ -1051,7 +1048,6 @@ h6 {
 }
 
 @keyframes scrollBounce {
-
   0%,
   100% {
     transform: translateX(-50%) translateY(0);
@@ -1145,10 +1141,12 @@ h6 {
 .cat-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top,
-      rgba(0, 0, 0, 0.85) 0%,
-      rgba(0, 0, 0, 0.15) 60%,
-      transparent 100%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.15) 60%,
+    transparent 100%
+  );
 }
 
 .cat-content {
@@ -1232,10 +1230,12 @@ h6 {
   left: 0;
   right: 0;
   height: 72px;
-  background: linear-gradient(180deg,
-      rgba(8, 7, 6, 0.62) 0%,
-      rgba(8, 7, 6, 0.22) 55%,
-      transparent 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(8, 7, 6, 0.62) 0%,
+    rgba(8, 7, 6, 0.22) 55%,
+    transparent 100%
+  );
   pointer-events: none;
   z-index: 1;
   transition: opacity 0.3s ease;
@@ -1366,7 +1366,6 @@ h6 {
 }
 
 @keyframes pulseGem {
-
   0%,
   100% {
     transform: scale(1);
@@ -1508,8 +1507,10 @@ h6 {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  z-index: 300;
+  z-index: 900;
   animation: fadeIn 0.2s ease;
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 @keyframes fadeIn {
@@ -1531,10 +1532,11 @@ h6 {
   max-width: 95vw;
   background: var(--surface);
   border-left: 1px solid var(--border-2);
-  z-index: 301;
+  z-index: 901;
   display: flex;
   flex-direction: column;
   animation: slideIn 0.3s ease;
+  overscroll-behavior: contain;
 }
 
 @keyframes slideIn {
@@ -1572,6 +1574,7 @@ h6 {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overscroll-behavior: contain;
 }
 
 .cart-empty {
@@ -1867,17 +1870,19 @@ h6 {
 ══════════════════════════════════════════════════════ */
 .product-detail-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
   align-items: start;
   padding: calc(var(--header-h) + 40px) 0 80px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 900px) {
   .product-detail-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding-top: calc(var(--header-h)+24px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding-top: calc(var(--header-h) + 24px);
   }
 }
 
@@ -2508,7 +2513,7 @@ h6 {
   border: 1px solid var(--border-2);
   border-radius: var(--radius);
   padding: 36px;
-  max-width: 760px;
+  max-width: 900px;
 }
 
 .admin-form-card h2 {
@@ -2625,12 +2630,12 @@ h6 {
   transition: all var(--transition);
 }
 
-.toggle-switch input:checked+.toggle-track {
+.toggle-switch input:checked + .toggle-track {
   background: var(--accent);
   border-color: var(--accent);
 }
 
-.toggle-switch input:checked+.toggle-track::after {
+.toggle-switch input:checked + .toggle-track::after {
   transform: translateX(20px);
   background: #0a0908;
 }
@@ -2783,10 +2788,12 @@ h6 {
 }
 
 .skeleton {
-  background: linear-gradient(90deg,
-      var(--surface-2) 25%,
-      var(--surface-3) 50%,
-      var(--surface-2) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 25%,
+    var(--surface-3) 50%,
+    var(--surface-2) 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: var(--radius-sm);
@@ -3061,6 +3068,7 @@ h6 {
   animation: fadeIn 0.22s ease-out;
   box-sizing: border-box;
   overflow-x: hidden;
+  overscroll-behavior: contain;
 }
 
 .quickview-modal {
@@ -3072,6 +3080,7 @@ h6 {
   border-radius: var(--radius-lg);
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
   box-sizing: border-box;
   position: relative;
   box-shadow:
@@ -3454,7 +3463,9 @@ h6 {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23c8a96e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
-  transition: border-color var(--transition), box-shadow var(--transition);
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition);
   box-sizing: border-box;
 }
 
@@ -3592,6 +3603,48 @@ h6 {
   color: var(--text);
   font-variant-numeric: tabular-nums;
   line-height: 1;
+}
+
+.qty-val-input {
+  width: 44px;
+  min-width: 36px;
+  height: 100%;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0 4px;
+  margin: 0;
+  -moz-appearance: textfield;
+  font-family: inherit;
+  cursor: text;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.qty-val-input::-webkit-outer-spin-button,
+.qty-val-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.qty-val-input:focus {
+  color: var(--accent);
+  background: rgba(200, 169, 110, 0.08);
+  border-radius: var(--radius-sm);
+}
+
+[data-theme='light'] .qty-val-input {
+  color: #11100e;
+}
+
+[data-theme='light'] .qty-val-input:focus {
+  color: var(--accent);
+  background: rgba(200, 169, 110, 0.12);
 }
 
 .quickview-add-cart-btn {
@@ -3776,16 +3829,35 @@ h6 {
 ══════════════════════════════════════════════════════ */
 .product-detail-grid {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: 48px;
   margin-bottom: 56px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 900px) {
   .product-detail-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 32px;
   }
+}
+
+.product-gallery-col,
+.product-detail-info {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.product-custom-quote-cta {
+  white-space: normal !important;
+  height: auto !important;
+  min-height: 44px;
+  padding: 10px 16px !important;
+  text-align: center;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .gallery-main {
@@ -3998,6 +4070,14 @@ h6 {
   margin-top: 14px;
   padding-top: 14px;
   border-top: 1px solid var(--border-2);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 500px) {
+  .product-highlights-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .highlight-pill {
@@ -4064,6 +4144,14 @@ h6 {
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-2);
   margin-bottom: 28px;
+  width: 100%;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.ikea-tabs-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .ikea-tab-btn {

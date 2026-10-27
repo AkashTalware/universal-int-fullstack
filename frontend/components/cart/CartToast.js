@@ -31,7 +31,19 @@ export default function CartToast() {
 
   function handleViewCart() {
     handleClose();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('close-quickview'));
+      window.dispatchEvent(new CustomEvent('close-all-modals'));
+    }
     setCartOpen(true);
+  }
+
+  function handleCheckout() {
+    handleClose();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('close-quickview'));
+      window.dispatchEvent(new CustomEvent('close-all-modals'));
+    }
   }
 
   if (!toastItem && !visible) return null;
@@ -108,7 +120,7 @@ export default function CartToast() {
         <Link
           href="/checkout"
           className="btn btn-primary btn-sm cart-toast-btn"
-          onClick={handleClose}
+          onClick={handleCheckout}
         >
           Checkout →
         </Link>

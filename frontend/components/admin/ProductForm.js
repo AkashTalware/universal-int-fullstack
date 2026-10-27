@@ -229,27 +229,37 @@ export default function ProductForm({ existingProduct }) {
 
         {/* Specs */}
         <div className="form-section-title">Specifications</div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3,1fr)',
-            gap: '20px',
-            marginBottom: '20px',
-          }}
-        >
-          <div className="form-group">
-            <label className="form-label" htmlFor="pf-dims">
-              Dimensions
-            </label>
-            <input
-              id="pf-dims"
-              name="dimensions"
-              className="input"
-              value={form.dimensions}
-              onChange={update}
-              placeholder="W × D × H cm"
-            />
-          </div>
+        <div className="form-group" style={{ marginBottom: '16px' }}>
+          <label
+            className="form-label"
+            htmlFor="pf-dims"
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            <span>Dimensions</span>
+            <span
+              style={{
+                fontSize: '11px',
+                color: 'var(--text-faint)',
+                textTransform: 'none',
+                fontWeight: 400,
+              }}
+            >
+              e.g. W 120 × D 30 × H 200 cm (Tower Bookcase)
+            </span>
+          </label>
+          <input
+            id="pf-dims"
+            name="dimensions"
+            className="input"
+            value={form.dimensions}
+            onChange={update}
+            title={form.dimensions}
+            placeholder="W × D × H cm (e.g. W 120 × D 30 × H 200 cm)"
+            style={{ width: '100%', fontSize: '14px' }}
+          />
+        </div>
+
+        <div className="form-grid-2" style={{ gap: '20px', marginBottom: '20px' }}>
           <div className="form-group">
             <label className="form-label" htmlFor="pf-mat">
               Material
@@ -260,7 +270,8 @@ export default function ProductForm({ existingProduct }) {
               className="input"
               value={form.material}
               onChange={update}
-              placeholder="e.g. Solid Walnut"
+              title={form.material}
+              placeholder="e.g. Powder-coated Steel + Solid Natural Oak"
             />
           </div>
           <div className="form-group">
@@ -273,7 +284,8 @@ export default function ProductForm({ existingProduct }) {
               className="input"
               value={form.finish}
               onChange={update}
-              placeholder="e.g. Natural Oil + Brass"
+              title={form.finish}
+              placeholder="e.g. Matte Black + Natural Oak"
             />
           </div>
         </div>

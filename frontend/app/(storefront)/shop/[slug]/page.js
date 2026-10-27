@@ -63,9 +63,29 @@ export default function ProductDetailPage() {
     load();
   }, [slug]);
 
+  function handleQtyChange(e) {
+    const raw = e.target.value;
+    if (raw === '') {
+      setQty('');
+      return;
+    }
+    const val = parseInt(raw, 10);
+    if (!isNaN(val)) {
+      setQty(Math.max(1, Math.min(999, val)));
+    }
+  }
+
+  function handleQtyBlur() {
+    if (!qty || Number(qty) < 1) {
+      setQty(1);
+    }
+  }
+
   function handleAddToCart() {
     if (!product) return;
-    addItem(product, qty, {
+    const finalQty = Math.max(1, Number(qty) || 1);
+    if (qty !== finalQty) setQty(finalQty);
+    addItem(product, finalQty, {
       dimensions: selectedDim,
       material: selectedMat,
       finish: selectedFinish,
@@ -526,16 +546,28 @@ export default function ProductDetailPage() {
                 <button
                   type="button"
                   className="qty-btn"
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  onClick={() => setQty((q) => Math.max(1, (Number(q) || 1) - 1))}
                   aria-label="Decrease quantity"
                 >
                   −
                 </button>
-                <span className="qty-val">{qty}</span>
+                <input
+                  type="number"
+                  min="1"
+                  max="999"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  className="qty-val qty-val-input"
+                  value={qty}
+                  onChange={handleQtyChange}
+                  onFocus={(e) => e.target.select()}
+                  onBlur={handleQtyBlur}
+                  aria-label="Product quantity"
+                />
                 <button
                   type="button"
                   className="qty-btn"
-                  onClick={() => setQty((q) => q + 1)}
+                  onClick={() => setQty((q) => Math.min(999, (Number(q) || 0) + 1))}
                   aria-label="Increase quantity"
                 >
                   +
@@ -588,8 +620,8 @@ export default function ProductDetailPage() {
             {/* Bespoke Dimension / Consultation Option */}
             <button
               onClick={() => setCustomQuoteOpen(true)}
-              className="btn btn-outline w-full"
-              style={{ justifyContent: 'center', marginTop: '10px', height: '44px' }}
+              className="btn btn-outline w-full product-custom-quote-cta"
+              style={{ justifyContent: 'center', marginTop: '10px' }}
             >
               <span>Need Custom Dimensions or Wood Finish? Request Quote →</span>
             </button>
